@@ -5,8 +5,8 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'AppTemplate - Build Beautiful Apps Faster',
-  description: 'A production-ready Next.js template with shadcn/ui components, TypeScript, and modern development tools.',
+  title: 'OCIMUM - Find Your Perfect Hostel Room',
+  description: 'Discover comfortable and affordable hostel accommodations with OCIMUM. Browse rooms, explore hostels, and find your ideal living space.',
 };
 
 export default function RootLayout({
