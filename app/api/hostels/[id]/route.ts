@@ -31,7 +31,7 @@ export async function GET(
 
     // Get block profiles and room types for each block
     const blocksWithDetails = await Promise.all(
-      blocks.map(async (block) => {
+      blocks.map(async (block: any) => {
         const blockProfile = await BlockProfile.findOne({ block: block._id });
         const roomTypes = await RoomType.find({ blockId: block._id.toString() });
 

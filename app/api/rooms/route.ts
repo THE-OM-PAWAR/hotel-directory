@@ -1,25 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb/client';
+import { registerModels } from '@/lib/mongoose/models/mongoose';
 import { RoomType } from '@/lib/mongoose/models/room-type.model';
 import { Block } from '@/lib/mongoose/models/block.model';
-import { Hostel } from '@/lib/mongoose/models/hostel.model';
 import { HostelProfile } from '@/lib/mongoose/models/hostel-profile.model';
 import { BlockProfile } from '@/lib/mongoose/models/block-profile.model';
+import { Hostel } from '@/lib/mongoose/models/hostel.model';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
-
+    registerModels(); // Register all models before use
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '12');
     const skip = (page - 1) * limit;
 
     // First, get hostels with online presence enabled
-    
     const onlineHostels = await HostelProfile.find({ 
       isOnlinePresenceEnabled: true 
     }).select('hostel');
+
 
     const hostelIds = onlineHostels.map(profile => profile.hostel);
 
@@ -29,7 +32,9 @@ export async function GET(request: NextRequest) {
       hostel: { $in: hostelIds } 
     }).select('_id');
 
+    
     const blockIds = blocks.map(block => block._id as string);
+    
 
     // Get room types from these blocks with pagination
     const roomTypes = await RoomType.find({ 
@@ -77,6 +82,7 @@ export async function GET(request: NextRequest) {
         };
       })
     );
+
 
     // Check if there are more rooms
     const totalCount = await RoomType.countDocuments({ 

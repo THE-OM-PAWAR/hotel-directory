@@ -38,23 +38,21 @@ const hostelUserSchema = new Schema({
   },
 });
 
-const hostelSchema = new Schema<IHostel>(
+export const hostelSchema = new Schema<IHostel>(
   {
     name: {
       type: String,
-      required: [true, 'Please provide a hostel name'],
-      trim: true,
+      required: true,
     },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Please provide the hostel owner'],
+      required: true,
     },
     users: [hostelUserSchema],
     joinCode: {
       type: String,
       unique: true,
-      required: true,
     },
   },
   {

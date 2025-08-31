@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { MapPin, Phone, Mail, Building, Users, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, Building, Users, ExternalLink, ArrowRight } from 'lucide-react';
 import { useHostel } from '@/hooks/use-hostel';
 
 interface HostelModalProps {
