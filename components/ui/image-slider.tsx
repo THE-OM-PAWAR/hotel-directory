@@ -4,14 +4,16 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
 interface ImageSliderProps {
   images: Array<{
     url: string;
     title: string;
   }>;
+  className?: string;
 }
 
-export function ImageSlider({ images }: ImageSliderProps) {
+export function ImageSlider({ images, className }: ImageSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!images || images.length === 0) {
@@ -35,11 +37,11 @@ export function ImageSlider({ images }: ImageSliderProps) {
   };
 
   return (
-    <div className="relative w-full h-full rounded-lg overflow-hidden group">
+    <div className={cn("relative w-full h-full bg-gray-100 rounded-lg overflow-hidden", className)}>
       <img
         src={images[currentIndex].url}
         alt={images[currentIndex].title}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-fit"
       />
       
       {images.length > 1 && (

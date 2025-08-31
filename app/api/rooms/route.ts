@@ -90,6 +90,8 @@ export async function GET(request: NextRequest) {
     // Filter out null results
     const validRooms = roomsWithDetails.filter(room => room !== null);
 
+    console.log(validRooms)
+
     // Check if there are more rooms
     const totalCount = await RoomType.countDocuments({ 
       blockId: { $in: blockIds } 

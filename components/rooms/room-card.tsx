@@ -1,9 +1,11 @@
 'use client';
 
+import { JSX } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Users, Wifi, Car } from 'lucide-react';
+import { MapPin, Users, Wifi, Car, Heart } from 'lucide-react';
 import { IRoomWithDetails } from '@/types/room';
+import { useState, useEffect } from 'react';
 
 interface RoomCardProps {
   room: IRoomWithDetails;
@@ -12,24 +14,44 @@ interface RoomCardProps {
 }
 
 export function RoomCard({ room, onClick, onHostelClick }: RoomCardProps) {
-  const coverImage = room.images?.find(img => img.isCover)?.url || 
-                    room.images?.[0]?.url || 
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Check if room is saved in localStorage
+  useEffect(() => {
+    const savedRooms = JSON.parse(localStorage.getItem('savedRooms') || '[]');
+    setIsSaved(savedRooms.some((savedRoom: any) => savedRoom?._id === room?._id));
+  }, [room?._id]);
+
+  const coverImage = room?.images?.find(img => img.isCover)?.url || 
+                    room?.images?.[0]?.url || 
                     'https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=400';
 
-  const hostelProfile = room.hostel.profile;
-  const blockProfile = room.block.profile;
+  const hostelProfile = room?.hostel?.profile;
+  const blockProfile = room?.block?.profile;
 
   return (
-    <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+    <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
       <div className="relative" onClick={onClick}>
         <img
           src={coverImage}
-          alt={room.name}
+          alt={room?.name}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 left-3">
           <Badge variant="secondary" className="bg-white/90 text-gray-700">
-            {room.name}
+            {room?.name}
+          </Badge>
+        </div>
+        <div className="absolute top-3 right-3">
+          {isSaved && (
+            <div className="bg-white/90 rounded-full p-1.5">
+              <Heart className="h-4 w-4 text-red-500 fill-current" />
+            </div>
+          )}
+        </div>
+        <div className="absolute bottom-3 right-3">
+          <Badge variant="default" className="bg-emerald-600 text-white">
+            ₹{room?.rent?.toLocaleString() || 'N/A'}
           </Badge>
         </div>
       </div>
@@ -46,12 +68,12 @@ export function RoomCard({ room, onClick, onHostelClick }: RoomCardProps) {
           >
             <img
               src={hostelProfile?.media?.profileImage || 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=100'}
-              alt={room.hostel.name}
+              alt={room?.hostel?.name}
               className="w-10 h-10 rounded-full object-cover"
             />
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-gray-900 truncate">
-                {room.hostel.name}
+                {room?.hostel?.name}
               </h3>
               <div className="flex items-center text-sm text-gray-500">
                 <MapPin className="h-3 w-3 mr-1" />
@@ -64,15 +86,17 @@ export function RoomCard({ room, onClick, onHostelClick }: RoomCardProps) {
 
           {/* Room Details */}
           <div className="space-y-2" onClick={onClick}>
-            <p className="text-sm text-gray-600 line-clamp-2">
-              {room.description}
-            </p>
+            {room?.description && (
+              <p className="text-sm text-gray-600 line-clamp-2">
+                {room?.description}
+              </p>
+            )}
 
             {/* Amenities Preview */}
             <div className="flex items-center space-x-4 text-xs text-gray-500">
               <div className="flex items-center space-x-1">
                 <Users className="h-3 w-3" />
-                <span>Block: {room.block.name}</span>
+                <span>Block: {room?.block?.name}</span>
               </div>
               {blockProfile?.amenities?.some(a => a.name.toLowerCase().includes('wifi') && a.available) && (
                 <div className="flex items-center space-x-1">
