@@ -69,7 +69,7 @@ export function RoomModal({ room, isOpen, onClose, onHostelClick, onBlockClick }
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent className="h-[95vh] w-[20vw]">
+      <DrawerContent className="h-[95vh] ">
         <DrawerHeader className="border-b">
           <DrawerTitle className="text-xl font-bold">{room.name}</DrawerTitle>
           <div className="flex items-center text-gray-500 text-sm">
