@@ -1,4 +1,4 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 
 interface RoomTypeImage {
   url: string;
@@ -17,50 +17,39 @@ export interface IRoomType extends Document {
   updatedAt: Date;
 }
 
-const roomTypeImageSchema = new Schema({
-  url: { type: String, required: true },
-  title: { type: String, required: true },
-  isCover: { type: Boolean, default: false },
-});
-
-const roomTypeSchema = new Schema<IRoomType>(
-  {
-    name: {
-      type: String,
-      required: [true, 'Please provide a room type name'],
-      trim: true,
-    },
-    description: {
-      type: String,
-      required: [true, 'Please provide a description'],
-      trim: true,
-    },
-    components: {
-      type: [Schema.Types.ObjectId],
-      ref: 'RoomComponent',
-      required: [true, 'Please provide at least one component'],
-      validate: {
-        validator: function(v: mongoose.Types.ObjectId[]) {
-          return Array.isArray(v) && v.length > 0;
-        },
-        message: 'At least one component is required'
-      }
-    },
-    rent: {
-      type: Number,
-      required: [true, 'Please provide the monthly rent'],
-      min: 0,
-    },
-    blockId: {
-      type: String,
-      required: [true, 'Please provide a block ID'],
-    },
-    images: [roomTypeImageSchema],
+// Create schema without TypeScript generics to avoid union type complexity
+const roomTypeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  description: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  components: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'RoomComponent',
+  }],
+  rent: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  blockId: {
+    type: String,
+    required: true,
+  },
+  images: [{
+    url: String,
+    title: String,
+    isCover: Boolean,
+  }],
+}, {
+  timestamps: true,
+});
 
 export const RoomType = (mongoose.models.RoomType as Model<IRoomType>) ||
   mongoose.model<IRoomType>('RoomType', roomTypeSchema);
