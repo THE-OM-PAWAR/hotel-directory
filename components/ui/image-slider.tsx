@@ -41,7 +41,7 @@ export function ImageSlider({ images, className }: ImageSliderProps) {
       <img
         src={images[currentIndex].url}
         alt={images[currentIndex].title}
-        className="w-full h-full object-fit"
+        className="w-full h-full object-contain"
       />
       
       {images.length > 1 && (

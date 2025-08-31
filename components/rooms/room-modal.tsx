@@ -65,11 +65,11 @@ export function RoomModal({ room, isOpen, onClose, onHostelClick, onBlockClick }
     description: photo.description
   })) || [];
 
-  
+  console.log(room.components)
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent className="h-[95vh] ">
+      <DrawerContent className="h-[95vh] lg:h-[85vh] lg:w-[30vw] m-auto ">
         <DrawerHeader className="border-b">
           <DrawerTitle className="text-xl font-bold">{room.name}</DrawerTitle>
           <div className="flex items-center text-gray-500 text-sm">
@@ -82,7 +82,7 @@ export function RoomModal({ room, isOpen, onClose, onHostelClick, onBlockClick }
           <div className="space-y-8">
             {/* Room Images */}
             {images.length > 0 && (
-              <div className="w-full h-full" style={{ aspectRatio: '3/4', maxHeight: '400px' }}>
+              <div className="w-full h-full " style={{ aspectRatio: '3/4', maxHeight: '400px' }}>
                 <ImageSlider images={images} />
               </div>
             )}

@@ -3,18 +3,18 @@
 import { useState, useEffect } from 'react';
 import { RoomCard } from '@/components/rooms/room-card';
 import { RoomModal } from '@/components/rooms/room-modal';
-import { HostelModal } from '@/components/hostels/hostel-modal';
 import { BlockDrawer } from '@/components/blocks/block-drawer';
 import { Header } from '@/components/layout/header';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useRooms } from '@/hooks/use-rooms';
 import { IRoomWithDetails } from '@/types/room';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [selectedRoom, setSelectedRoom] = useState<IRoomWithDetails | null>(null);
-  const [selectedHostel, setSelectedHostel] = useState<string | null>(null);
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const router = useRouter();
   
   const { rooms, loading, hasMore, loadMore } = useRooms(page);
 
@@ -54,7 +54,7 @@ export default function Home() {
               key={room._id}
               room={room}
               onClick={() => setSelectedRoom(room)}
-              onHostelClick={() => setSelectedHostel(room.hostel._id)}
+              onHostelClick={() => router.push(`/hostels/${room.hostel._id}`)}
             />
           ))}
         </div>
@@ -84,25 +84,12 @@ export default function Home() {
           room={selectedRoom}
           isOpen={!!selectedRoom}
           onClose={() => setSelectedRoom(null)}
-          onHostelClick={() => {
-            setSelectedHostel(selectedRoom.hostel._id);
-            setSelectedRoom(null);
-          }}
           onBlockClick={() => {
             setSelectedBlock(selectedRoom.block._id);
             setSelectedRoom(null);
           }}
-        />
-      )}
-
-      {selectedHostel && (
-        <HostelModal
-          hostelId={selectedHostel}
-          isOpen={!!selectedHostel}
-          onClose={() => setSelectedHostel(null)}
-          onBlockClick={(blockId) => {
-            setSelectedBlock(blockId);
-            setSelectedHostel(null);
+          onRoomChange={(newRoom) => {
+            setSelectedRoom(newRoom);
           }}
         />
       )}
