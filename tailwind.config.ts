@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        poppins: ['var(--font-poppins)', 'sans-serif'],
+        'space-mono': ['var(--font-space-mono)', 'monospace'],
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -20,6 +24,13 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        brand: {
+          black: '#010105',
+          blue: '#3932D8',
+          'blue-light': '#B7B4F0',
+          gray: '#E7E7E5',
+          white: '#FFFFD',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

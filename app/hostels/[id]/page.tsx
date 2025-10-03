@@ -79,7 +79,7 @@ export default function HostelPage() {
                     <span>{profile.basicInfo.address}</span>
                   </div>
                   <div className="flex items-center text-gray-600">
-                    <span>{profile.basicInfo.city}, {profile.basicInfo.state} - {profile.basicInfo.pincode}</span>
+                    <span>{profile.basicInfo.city} - {profile.basicInfo.pincode}</span>
                   </div>
                   {profile.basicInfo.landmark && (
                     <div className="text-gray-500 text-sm">
