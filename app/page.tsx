@@ -14,11 +14,14 @@ export default function Home() {
   useEffect(() => {
     async function fetchBlocks() {
       try {
+        console.log('Fetching blocks from API...');
         const response = await fetch('/api/blocks-with-hostels');
         const data = await response.json();
+        console.log('API response:', data);
         setBlocks(data.blocks || []);
       } catch (error) {
         console.error('Error fetching blocks:', error);
+        setBlocks([]);
       } finally {
         setLoading(false);
       }
@@ -48,7 +51,20 @@ export default function Home() {
             <LoadingSpinner />
           </div>
         ) : (
-          <BlocksGrid blocks={blocks} />
+          <>
+            {blocks.length === 0 && (
+              <div className="text-center py-20">
+                <p className="text-gray-600 mb-4">No blocks found. Check console for debugging info.</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="px-4 py-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/90"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+            <BlocksGrid blocks={blocks} />
+          </>
         )}
       </main>
     </div>

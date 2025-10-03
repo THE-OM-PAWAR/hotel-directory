@@ -12,11 +12,15 @@ export async function GET() {
     // Register all models to ensure they are available
     registerModels();
 
+    console.log('Fetching hostel profiles...');
     const hostelProfiles = await HostelProfile.find({ isOnlinePresenceEnabled: true })
       .populate('hostel')
       .lean();
 
+    console.log(`Found ${hostelProfiles.length} hostel profiles`);
+
     if (!hostelProfiles || hostelProfiles.length === 0) {
+      console.log('No hostel profiles found with isOnlinePresenceEnabled: true');
       return NextResponse.json({ blocks: [] });
     }
 
@@ -35,15 +39,22 @@ export async function GET() {
       return NextResponse.json({ blocks: [] });
     }
 
+    console.log(`Searching for blocks with hostel IDs: ${hostelIds.length} hostels`);
     const blocks = await Block.find({ hostel: { $in: hostelIds } }).lean();
 
+    console.log(`Found ${blocks.length} blocks`);
+
     if (!blocks || blocks.length === 0) {
+      console.log('No blocks found for the given hostel IDs');
       return NextResponse.json({ blocks: [] });
     }
 
     const blockIds = blocks.map((b: any) => b._id);
 
+    console.log(`Searching for block profiles with block IDs: ${blockIds.length} blocks`);
     const blockProfiles = await BlockProfile.find({ block: { $in: blockIds } }).lean();
+
+    console.log(`Found ${blockProfiles.length} block profiles`);
 
     const blockProfileMap = new Map();
     blockProfiles.forEach((bp: any) => {
@@ -65,12 +76,18 @@ export async function GET() {
         const hostelProfile = hostelProfileMap.get(block.hostel.toString());
 
         return {
-          block: blockProfile,
+          block: {
+            _id: block._id,
+            basicInfo: blockProfile.basicInfo,
+            propertyDetails: blockProfile.propertyDetails,
+            media: blockProfile.media,
+          },
           hostel,
           hostelProfile,
         };
       });
 
+    console.log(`Returning ${result.length} blocks with profiles`);
     return NextResponse.json({ blocks: result });
   } catch (error) {
     console.error('Error fetching blocks:', error);
