@@ -37,8 +37,8 @@ export function BlockCard({ block, hostelName, hostelProfile }: BlockCardProps) 
   return (
     <Link href={`/blocks/${block._id}`}>
       <div className="group cursor-pointer">
-        <div className="relative overflow-hidden rounded-2xl border-4 border-brand-black bg-white shadow-[8px_8px_0px_0px_rgba(1,1,5,1)] hover:shadow-[12px_12px_0px_0px_rgba(57,50,216,1)] transition-all duration-300 hover:-translate-y-1">
-          <div className="aspect-[4/3] relative overflow-hidden bg-brand-gray">
+        <div className="relative overflow-hidden rounded-2xl border-4 border-brand-black bg-brand-white shadow-[6px_6px_0px_0px_rgba(1,1,5,1)] hover:shadow-[8px_8px_0px_0px_rgba(57,50,216,1)] transition-all duration-300 hover:-translate-y-1 w-[280px] h-[320px] flex flex-col">
+          <div className="aspect-[4/3] relative overflow-hidden bg-brand-gray flex-shrink-0">
             {mainPhoto?.url ? (
               <img
                 src={mainPhoto.url}
@@ -47,12 +47,12 @@ export function BlockCard({ block, hostelName, hostelProfile }: BlockCardProps) 
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <Sparkles className="w-12 h-12 text-brand-blue/30" />
+                <Sparkles className="w-8 h-8 text-brand-blue/30" />
               </div>
             )}
 
             {profileImage && (
-              <div className="absolute top-4 right-4 w-12 h-12 rounded-full border-2 border-white overflow-hidden bg-white shadow-lg">
+              <div className="absolute top-3 right-3 w-8 h-8 rounded-full border-2 border-brand-white overflow-hidden bg-brand-white shadow-lg">
                 <img
                   src={profileImage}
                   alt={hostelName}
@@ -62,34 +62,28 @@ export function BlockCard({ block, hostelName, hostelProfile }: BlockCardProps) 
             )}
           </div>
 
-          <div className="p-5">
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <h3 className="text-2xl font-bold mb-1 group-hover:text-brand-blue transition-colors">
+          <div className="p-4 flex-1 flex flex-col justify-between">
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-bold mb-1 group-hover:text-brand-blue transition-colors truncate">
                   {block.basicInfo.name}
                 </h3>
-                <p className="text-sm font-light text-gray-600">{hostelName}</p>
+                <p className="text-xs text-gray-600 truncate">{hostelName}</p>
               </div>
-              <span className="px-3 py-1 bg-brand-blue-light text-brand-black text-xs font-bold rounded-full border-2 border-brand-black">
+              <span className="px-2 py-1 bg-brand-blue-light text-brand-black text-xs font-bold rounded-full border-2 border-brand-black ml-2 flex-shrink-0">
                 {block.propertyDetails.accommodationType.toUpperCase()}
               </span>
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-gray-600">
+            <div className="flex items-center gap-3 text-xs text-gray-600">
               <div className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                <span className="font-medium">{block.basicInfo.city}</span>
+                <MapPin className="w-3 h-3" />
+                <span className="truncate">{block.basicInfo.city}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Users className="w-4 h-4" />
-                <span className="font-medium">{block.propertyDetails.totalRooms} rooms</span>
+                <Users className="w-3 h-3" />
+                <span>{block.propertyDetails.totalRooms}</span>
               </div>
-            </div>
-
-            <div className="mt-4 pt-4 border-t-2 border-brand-black">
-              <p className="text-xs font-medium text-gray-500 line-clamp-1">
-                {block.basicInfo.address}
-              </p>
             </div>
           </div>
         </div>
@@ -111,16 +105,16 @@ interface BlocksGridProps {
 export function BlocksGrid({ blocks }: BlocksGridProps) {
   if (!blocks || blocks.length === 0) {
     return (
-      <div className="text-center py-20">
-        <Sparkles className="w-16 h-16 mx-auto mb-4 text-brand-blue/30" />
-        <h3 className="text-2xl font-bold mb-2">No Hostels Available</h3>
-        <p className="text-gray-600">Check back soon for new listings!</p>
+      <div className="text-center py-12">
+        <Sparkles className="w-12 h-12 mx-auto mb-3 text-brand-blue/30" />
+        <h3 className="text-lg font-bold mb-1">No Hostels Available</h3>
+        <p className="text-sm text-gray-600">Check back soon for new listings!</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
       {blocks.map((item) => (
         <BlockCard
           key={item.block._id}

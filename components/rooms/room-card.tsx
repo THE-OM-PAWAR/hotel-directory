@@ -30,7 +30,7 @@ export function RoomCard({ room, onClick, onHostelClick }: RoomCardProps) {
   const blockProfile = room?.block?.profile;
 
   return (
-    <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden relative">
+    <Card className="group cursor-pointer hover:shadow-[6px_6px_0px_0px_rgba(1,1,5,1)] transition-all duration-300 hover:-translate-y-1 overflow-hidden relative border-4 border-brand-black bg-brand-white">
       <div className="relative" onClick={onClick}>
         <img
           src={coverImage}
@@ -38,19 +38,19 @@ export function RoomCard({ room, onClick, onHostelClick }: RoomCardProps) {
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute top-3 left-3">
-          <Badge variant="secondary" className="bg-white/90 text-gray-700">
+          <Badge variant="secondary" className="bg-brand-white/90 text-brand-black border-2 border-brand-black font-bold">
             {room?.name}
           </Badge>
         </div>
         <div className="absolute top-3 right-3">
           {isSaved && (
-            <div className="bg-white/90 rounded-full p-1.5">
-              <Heart className="h-4 w-4 text-red-500 fill-current" />
+            <div className="bg-brand-white/90 rounded-full p-1.5 border-2 border-brand-black">
+              <Heart className="h-4 w-4 text-brand-blue fill-current" />
             </div>
           )}
         </div>
         <div className="absolute bottom-3 right-3">
-          <Badge variant="default" className="bg-emerald-600 text-white">
+          <Badge variant="default" className="bg-brand-blue text-brand-white border-2 border-brand-black font-bold">
             ₹{room?.rent?.toLocaleString() || 'N/A'}
           </Badge>
         </div>
@@ -114,10 +114,10 @@ export function RoomCard({ room, onClick, onHostelClick }: RoomCardProps) {
 
             {/* Accommodation Type */}
             <div className="flex items-center justify-between">
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs border-2 border-brand-black bg-brand-blue-light text-brand-black font-bold">
                 {blockProfile?.propertyDetails?.accommodationType || 'Mixed'}
               </Badge>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-600 font-medium">
                 {blockProfile?.propertyDetails?.totalRooms || 0} rooms
               </span>
             </div>
