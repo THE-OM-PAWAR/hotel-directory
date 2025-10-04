@@ -37,7 +37,7 @@ export function BlockCard({ block, hostelName, hostelProfile }: BlockCardProps) 
   return (
     <Link href={`/blocks/${block._id}`}>
       <div className="group cursor-pointer">
-        <div className="relative overflow-hidden rounded-2xl border-4 border-brand-black bg-brand-white shadow-[6px_6px_0px_0px_rgba(1,1,5,1)] hover:shadow-[8px_8px_0px_0px_rgba(57,50,216,1)] transition-all duration-300 hover:-translate-y-1 w-[280px] h-[320px] flex flex-col">
+        <div className="relative overflow-hidden rounded-2xl border-4 border-brand-black bg-brand-white shadow-[6px_6px_0px_0px_rgba(1,1,5,1)] transition-all duration-300 hover:-translate-y-1 w-[280px] h-[320px] flex flex-col">
           <div className="aspect-[4/3] relative overflow-hidden bg-brand-gray flex-shrink-0">
             {mainPhoto?.url ? (
               <img
