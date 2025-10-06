@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { Header } from '@/components/home/header';
 import { BlockHeader } from '@/components/blocks/block-header';
+import { BlockDetails } from '@/components/blocks/block-details';
 import { RoomTypesSection } from '@/components/blocks/room-types-section';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
@@ -94,6 +95,8 @@ export default function BlockDetailPage() {
         hostel={blockData.hostel}
         hostelProfile={blockData.hostelProfile}
       />
+
+      <BlockDetails block={blockData.block} />
 
       <RoomTypesSection roomTypes={roomTypes} />
     </div>

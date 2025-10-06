@@ -6,7 +6,7 @@ import { Header } from '@/components/home/header';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Badge } from '@/components/ui/badge';
 import { ImageGallery } from '@/components/ui/image-gallery';
-import { ArrowLeft, MapPin, Users, Wifi, Car, Heart, Building2, Chrome as Home, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
+import { ArrowLeft, MapPin, Users, Wifi, Car, Heart, Building2, Chrome as Home, ChevronLeft, ChevronRight, Eye, Phone, Check, Shield, Map } from 'lucide-react';
 import Link from 'next/link';
 
 export default function RoomDetailPage() {
@@ -231,60 +231,94 @@ export default function RoomDetailPage() {
                 </div>
               )}
             </div>
-
-            {/* Location Details */}
-            <div className="bg-card border-2 border-border rounded-2xl p-6 shadow-lg">
-              <h2 className="text-xl font-bold mb-4">Location Details</h2>
-
-              <Link href={`/hostels/${room.hostel._id}`}>
-                <div className="flex items-center space-x-3 p-3 bg-secondary/50 rounded-xl border-2 border-border hover:border-brand-blue transition-all cursor-pointer mb-4">
-                  <img
-                    src={hostelProfile?.media?.profileImage || 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=100'}
-                    alt={room.hostel.name}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-border"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-sm">Hostel</p>
-                    <p className="text-sm text-muted-foreground truncate">{room.hostel.name}</p>
-                  </div>
+              {/* Block Details */}
+            <div className="bg-card border-2 border-border rounded-2xl shadow-lg overflow-hidden">
+              <div className="p-6 border-b border-border bg-secondary/30">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold">Hostel Details</h2>
+                  <Link href={`/blocks/${room.block._id}`} className="text-brand-blue hover:underline text-sm">
+                    View Full Details
+                  </Link>
                 </div>
-              </Link>
-
-              <Link href={`/blocks/${room.block._id}`}>
-                <div className="flex items-center space-x-3 p-3 bg-secondary/50 rounded-xl border-2 border-border hover:border-brand-blue transition-all cursor-pointer">
-                  <div className="w-12 h-12 rounded-full bg-brand-blue/10 flex items-center justify-center border-2 border-border">
-                    <Building2 className="w-6 h-6 text-brand-blue" />
+                {blockProfile?.basicInfo && (
+                  <div className="flex flex-col gap-2 mt-4">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Building2 className="w-4 h-4" />
+                      <span className="text-sm font-medium">{blockProfile.basicInfo.name}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <MapPin className="w-4 h-4" />
+                      <span className="text-sm">{blockProfile.basicInfo.address}, {blockProfile.basicInfo.city}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Phone className="w-4 h-4" />
+                      <span className="text-sm">{blockProfile.basicInfo.contactNumber}</span>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-sm">Block</p>
-                    <p className="text-sm text-muted-foreground truncate">{room.block.name}</p>
-                  </div>
-                </div>
-              </Link>
+                )}
+              </div>
 
-              {hostelProfile?.basicInfo?.city && (
-                <div className="flex items-center gap-2 mt-4 text-muted-foreground">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-sm">{hostelProfile.basicInfo.city}</span>
-                </div>
-              )}
+              <div className="p-6">
+                <div className="grid grid-cols-1 gap-6">
+                  {/* Property Details */}
+                  {blockProfile?.propertyDetails && (
+                    <div className="bg-secondary/30 rounded-xl p-4 border-2 border-border">
+                      <h3 className="text-sm font-bold mb-3">Property Information</h3>
+                      <p className="text-sm text-muted-foreground">
+                        This property has <span className="font-medium text-foreground">{blockProfile.propertyDetails.totalFloors}</span> floor{blockProfile.propertyDetails.totalFloors > 1 ? 's' : ''} and <span className="font-medium text-foreground">{blockProfile.propertyDetails.totalRooms}</span> room{blockProfile.propertyDetails.totalRooms > 1 ? 's' : ''}. It is a <span className="font-medium capitalize text-foreground">{blockProfile.propertyDetails.accommodationType}</span> type accommodation in a <span className="font-medium capitalize text-foreground">{blockProfile.propertyDetails.buildingType}</span> building.
+                      </p>
+                    </div>
+                  )}
 
-              {blockProfile?.amenities && blockProfile.amenities.length > 0 && (
-                <div className="mt-6">
-                  <h3 className="text-sm font-bold mb-3">Amenities</h3>
-                  <div className="space-y-2">
-                    {blockProfile.amenities.slice(0, 5).map((amenity: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">{amenity.name}</span>
-                        <Badge variant={amenity.available ? "default" : "secondary"} className="text-xs">
-                          {amenity.available ? 'Available' : 'Not Available'}
-                        </Badge>
+                  {/* Available Amenities */}
+                  {blockProfile?.amenities && (
+                    <div className="bg-secondary/30 rounded-xl p-4 border-2 border-border">
+                      <h3 className="text-sm font-bold mb-3">Available Amenities</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {blockProfile.amenities
+                          .filter((amenity: any) => amenity.available)
+                          .map((amenity: any, index: number) => (
+                            <div key={index} className="flex items-center gap-2 bg-secondary/50 p-2 rounded-lg">
+                              <Check className="w-4 h-4 text-brand-blue" />
+                              <span className="text-sm text-muted-foreground">{amenity.name}</span>
+                            </div>
+                          ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
+
+                  {/* Safety Features */}
+                  {blockProfile?.safetyFeatures && (
+                    <div className="bg-secondary/30 rounded-xl p-4 border-2 border-border">
+                      <h3 className="text-sm font-bold mb-3">Safety Features</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {blockProfile.safetyFeatures
+                          .filter((feature: any) => feature.available)
+                          .map((feature: any, index: number) => (
+                            <div key={index} className="flex items-center gap-2 bg-secondary/50 p-2 rounded-lg">
+                              <Shield className="w-4 h-4 text-brand-blue" />
+                              <span className="text-sm text-muted-foreground">{feature.feature}</span>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Location Map Link */}
+                  {blockProfile?.locationInfo?.googleMapLink && (
+                    <Link 
+                      href={blockProfile.locationInfo.googleMapLink}
+                      target="_blank"
+                      className="flex items-center justify-center gap-2 p-3 bg-brand-blue/10 text-brand-blue rounded-xl border-2 border-brand-blue/20 hover:bg-brand-blue/20 transition-colors"
+                    >
+                      <Map className="w-4 h-4" />
+                      <span className="text-sm font-medium">View on Google Maps</span>
+                    </Link>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
+ 
           </div>
         </div>
 
