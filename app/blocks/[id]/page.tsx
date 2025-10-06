@@ -92,9 +92,9 @@ export default function BlockDetailPage() {
         hostelProfile={blockData.hostelProfile}
       />
 
-      <BlockDetails block={blockData.block} />
 
       <RoomTypesSection roomTypes={roomTypes} />
+      <BlockDetails block={blockData.block} />
     </PageLayout>
   );
 }
