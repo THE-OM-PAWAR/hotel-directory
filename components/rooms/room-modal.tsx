@@ -192,14 +192,7 @@ export function RoomModal({ room, isOpen, onClose, onHostelClick, onBlockClick }
                   <div className="flex space-x-4 pb-2">
                     {otherRoomTypes.map((roomType) => (
                       <div key={roomType._id} className="min-w-[280px]">
-                        <RoomCard
-                          room={roomType as IRoomWithDetails}
-                          onClick={() => {
-                            // Handle room type selection
-                            console.log('Selected room type:', roomType);
-                          }}
-                          onHostelClick={onHostelClick}
-                        />
+                        <RoomCard room={roomType as IRoomWithDetails} />
                       </div>
                     ))}
                   </div>

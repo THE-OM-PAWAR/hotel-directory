@@ -50,7 +50,7 @@ export default function BlockDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-white">
+      <div className="min-h-screen bg-background">
         <Header />
         <div className="flex items-center justify-center h-[60vh]">
           <LoadingSpinner />
@@ -61,14 +61,14 @@ export default function BlockDetailPage() {
 
   if (error || !blockData) {
     return (
-      <div className="min-h-screen bg-brand-white">
+      <div className="min-h-screen bg-background">
         <Header />
         <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl font-extrabold mb-4">Block Not Found</h1>
-          <p className="text-gray-600 mb-8">{error || 'The requested block could not be found.'}</p>
+          <h1 className="text-4xl font-bold mb-4">Block Not Found</h1>
+          <p className="text-muted-foreground mb-8">{error || 'The requested block could not be found.'}</p>
           <button
             onClick={() => router.push('/')}
-            className="px-6 py-3 bg-brand-blue text-white rounded-lg font-bold hover:bg-brand-black transition-colors"
+            className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:scale-105 active:scale-95 transition-all"
           >
             Back to Home
           </button>
@@ -78,12 +78,12 @@ export default function BlockDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-white">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <button
         onClick={() => router.push('/')}
-        className="fixed top-20 left-4 z-40 bg-white p-3 rounded-full border-2 border-brand-black shadow-lg hover:bg-brand-gray transition-colors"
+        className="fixed top-20 left-4 z-40 bg-background/80 backdrop-blur-sm p-3 rounded-xl border-2 border-border shadow-lg hover:bg-background transition-all hover:scale-110 active:scale-95"
         aria-label="Go back"
       >
         <ArrowLeft className="w-5 h-5" />

@@ -72,7 +72,7 @@ export async function GET() {
       .filter((block: any) => blockProfileMap.has(block._id.toString()))
       .map((block: any) => {
         const blockProfile = blockProfileMap.get(block._id.toString());
-        const hostel = hostelProfiles.find((hp: any) => hp.hostel._id.toString() === block.hostel.toString())?.hostel;
+        const hostel = hostelProfiles.find((hp: any) => hp.hostel && hp.hostel._id && hp.hostel._id.toString() === block.hostel.toString())?.hostel;
         const hostelProfile = hostelProfileMap.get(block.hostel.toString());
 
         return {

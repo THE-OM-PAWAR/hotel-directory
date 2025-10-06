@@ -29,7 +29,7 @@ const config: Config = {
           blue: '#3932D8',
           'blue-light': '#B7B4F0',
           gray: '#E7E7E5',
-          white: '#FFFFD',
+          white: '#FFFFFD',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

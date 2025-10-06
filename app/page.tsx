@@ -8,6 +8,7 @@ import { BlocksGrid } from '@/components/home/blocks-grid';
 import { RoomsGrid } from '@/components/home/rooms-grid';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { IRoomWithDetails } from '@/types/room';
+import { Footer } from '@/components/layout/footer';
 
 export default function Home() {
   const [blocks, setBlocks] = useState<any[]>([]);
@@ -20,10 +21,8 @@ export default function Home() {
   useEffect(() => {
     async function fetchBlocks() {
       try {
-        console.log('Fetching blocks from API...');
         const response = await fetch('/api/blocks-with-hostels');
         const data = await response.json();
-        console.log('API response:', data);
         setBlocks(data.blocks || []);
       } catch (error) {
         console.error('Error fetching blocks:', error);
@@ -39,11 +38,9 @@ export default function Home() {
   useEffect(() => {
     async function fetchRooms() {
       try {
-        console.log('Fetching rooms from API...');
         const response = await fetch(`/api/rooms?page=${roomsPage}&limit=12`);
         const data = await response.json();
-        console.log('Rooms API response:', data);
-        
+
         if (roomsPage === 1) {
           setRooms(data.rooms || []);
         } else {
@@ -68,19 +65,18 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-white">
+    <div className="min-h-screen bg-background">
       <Header />
       <OfferBar />
       <HeroCarousel />
 
-      <main className="max-w-7xl mx-auto px-4 py-12">
-        {/* Featured Hostels Section */}
-        <section className="mb-16">
-          <div className="mb-10">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-2">
+      <main className="max-w-7xl mx-auto px-4 py-12 space-y-16">
+        <section className="animate-slide-up">
+          <div className="mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">
               Explore <span className="text-brand-blue">Hostels</span>
             </h2>
-            <p className="text-gray-600 font-light">
+            <p className="text-muted-foreground font-light">
               Find your perfect stay from our curated selection
             </p>
           </div>
@@ -93,10 +89,10 @@ export default function Home() {
             <>
               {blocks.length === 0 && (
                 <div className="text-center py-20">
-                  <p className="text-gray-600 mb-4">No hostels found. Check console for debugging info.</p>
-                  <button 
-                    onClick={() => window.location.reload()} 
-                    className="px-4 py-2 bg-brand-blue text-brand-white rounded-lg hover:bg-brand-black transition-colors border-2 border-brand-black"
+                  <p className="text-muted-foreground mb-4">No hostels found.</p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-brand-blue text-white rounded-xl hover:scale-105 active:scale-95 transition-all border-2 border-border"
                   >
                     Retry
                   </button>
@@ -107,18 +103,17 @@ export default function Home() {
           )}
         </section>
 
-        {/* Available Rooms Section */}
-        <section className="mb-16">
-          <div className="mb-10">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-2">
+        <section className="animate-slide-up">
+          <div className="mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">
               Available <span className="text-brand-blue">Rooms</span>
             </h2>
-            <p className="text-gray-600 font-light">
+            <p className="text-muted-foreground font-light">
               Browse through our available room options
             </p>
           </div>
 
-          <RoomsGrid 
+          <RoomsGrid
             rooms={rooms}
             loading={roomsLoading}
             onLoadMore={handleLoadMoreRooms}
@@ -126,6 +121,7 @@ export default function Home() {
           />
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

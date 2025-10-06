@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb/client';
 import { registerModels } from '@/lib/mongoose/models/mongoose';
 import { RoomType } from '@/lib/mongoose/models/room-type.model';
+import { RoomComponent } from '@/lib/mongoose/models/room-component.model';
 import { Block } from '@/lib/mongoose/models/block.model';
 import { HostelProfile } from '@/lib/mongoose/models/hostel-profile.model';
 import { BlockProfile } from '@/lib/mongoose/models/block-profile.model';
@@ -71,8 +72,17 @@ export async function GET(request: NextRequest) {
           block: block._id 
         }).lean();
 
+        // Get room components if they exist
+        let components: any[] = [];
+        if (roomType.components && roomType.components.length > 0) {
+          components = await RoomComponent.find({
+            _id: { $in: roomType.components }
+          }).lean();
+        }
+
         return {
           ...roomType.toObject(),
+          components,
           hostel: {
             _id: block.hostel._id,
             name: block.hostel.name,
@@ -90,7 +100,6 @@ export async function GET(request: NextRequest) {
     // Filter out null results
     const validRooms = roomsWithDetails.filter(room => room !== null);
 
-    console.log(validRooms)
 
     // Check if there are more rooms
     const totalCount = await RoomType.countDocuments({ 
