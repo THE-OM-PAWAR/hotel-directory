@@ -44,7 +44,7 @@ export function HeroCarousel() {
   };
 
   return (
-    <div className="relative  aspect-[2/1] w-full overflow-hidden">
+    <div className="relative max-w-7xl mx-auto aspect-[2/1] w-full overflow-hidden">
       {banners.map((banner, index) => (
         <div
           key={banner.id}
