@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { Header } from '@/components/layout/header';
+import { PageLayout } from '@/components/layout/page-layout';
 import { ArrowLeft, MapPin, Phone, Mail, Building, Users, ExternalLink, ArrowRight } from 'lucide-react';
 import { useHostel } from '@/hooks/use-hostel';
 import { useState } from 'react';
@@ -20,19 +20,17 @@ export default function HostelPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
+      <PageLayout className="bg-gray-50">
         <div className="flex justify-center py-16">
           <LoadingSpinner />
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   if (!hostel) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
+      <PageLayout className="bg-gray-50">
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Hostel Not Found</h1>
           <p className="text-gray-600 mb-6">The hostel you're looking for doesn't exist or has been removed.</p>
@@ -41,17 +39,15 @@ export default function HostelPage() {
             Back to Home
           </Button>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   const profile = hostel.profile;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      
-      <main className="container mx-auto px-4 py-8">
+    <PageLayout className="bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
         {/* Back Button */}
         <Button 
           variant="ghost" 
@@ -325,16 +321,16 @@ export default function HostelPage() {
             </div>
           </div>
         )}
-      </main>
 
-      {/* Block Drawer */}
-      {selectedBlock && (
-        <BlockDrawer
-          blockId={selectedBlock}
-          isOpen={!!selectedBlock}
-          onClose={() => setSelectedBlock(null)}
-        />
-      )}
-    </div>
+        {/* Block Drawer */}
+        {selectedBlock && (
+          <BlockDrawer
+            blockId={selectedBlock}
+            isOpen={!!selectedBlock}
+            onClose={() => setSelectedBlock(null)}
+          />
+        )}
+      </div>
+    </PageLayout>
   );
 }

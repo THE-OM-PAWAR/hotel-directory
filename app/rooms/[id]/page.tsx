@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Header } from '@/components/home/header';
+import { PageLayout } from '@/components/layout/page-layout';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Badge } from '@/components/ui/badge';
 import { ImageGallery } from '@/components/ui/image-gallery';
@@ -82,19 +82,17 @@ export default function RoomDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <PageLayout>
         <div className="flex items-center justify-center h-[60vh]">
           <LoadingSpinner />
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   if (!room) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <PageLayout>
         <div className="max-w-7xl mx-auto px-4 py-20 text-center">
           <h1 className="text-4xl font-bold mb-4">Room Not Found</h1>
           <p className="text-muted-foreground mb-8">The requested room could not be found.</p>
@@ -105,7 +103,7 @@ export default function RoomDetailPage() {
             Back to Home
           </button>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
@@ -114,9 +112,7 @@ export default function RoomDetailPage() {
   const blockProfile = room.block?.profile;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <PageLayout>
       {showGallery && (
         <ImageGallery 
           images={images} 
@@ -356,6 +352,6 @@ export default function RoomDetailPage() {
           </div>
         )}
       </main>
-    </div>
+    </PageLayout>
   );
 }

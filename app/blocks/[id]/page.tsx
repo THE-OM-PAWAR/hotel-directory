@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import { Header } from '@/components/home/header';
+import { PageLayout } from '@/components/layout/page-layout';
 import { BlockHeader } from '@/components/blocks/block-header';
 import { BlockDetails } from '@/components/blocks/block-details';
 import { RoomTypesSection } from '@/components/blocks/room-types-section';
@@ -51,19 +51,17 @@ export default function BlockDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <PageLayout>
         <div className="flex items-center justify-center h-[60vh]">
           <LoadingSpinner />
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   if (error || !blockData) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <PageLayout>
         <div className="max-w-7xl mx-auto px-4 py-20 text-center">
           <h1 className="text-4xl font-bold mb-4">Block Not Found</h1>
           <p className="text-muted-foreground mb-8">{error || 'The requested block could not be found.'}</p>
@@ -74,14 +72,12 @@ export default function BlockDetailPage() {
             Back to Home
           </button>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <PageLayout>
       <button
         onClick={() => router.push('/')}
         className="fixed top-20 left-4 z-40 bg-background/80 backdrop-blur-sm p-3 rounded-xl border-2 border-border shadow-lg hover:bg-background transition-all hover:scale-110 active:scale-95"
@@ -99,6 +95,6 @@ export default function BlockDetailPage() {
       <BlockDetails block={blockData.block} />
 
       <RoomTypesSection roomTypes={roomTypes} />
-    </div>
+    </PageLayout>
   );
 }
