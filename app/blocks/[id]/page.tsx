@@ -1,100 +1,86 @@
-'use client';
+import { Metadata } from 'next';
+import { BlockPageClient } from './block-page-client';
+import connectDB from '@/lib/mongodb/client';
+import { Block } from '@/lib/mongoose/models/block.model';
+import { BlockProfile } from '@/lib/mongoose/models/block-profile.model';
+import { Hostel } from '@/lib/mongoose/models/hostel.model';
+import { HostelProfile } from '@/lib/mongoose/models/hostel-profile.model';
 
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
-import { PageLayout } from '@/components/layout/page-layout';
-import { BlockHeader } from '@/components/blocks/block-header';
-import { BlockDetails } from '@/components/blocks/block-details';
-import { RoomTypesSection } from '@/components/blocks/room-types-section';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+interface Props {
+  params: { id: string };
+}
 
-export default function BlockDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [blockData, setBlockData] = useState<any>(null);
-  const [roomTypes, setRoomTypes] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    await connectDB();
+    const block = await Block.findById(params.id).lean();
+    const blockProfile = block ? await BlockProfile.findOne({ blockId: block._id }).lean() : null;
+    const hostel = block ? await Hostel.findById(block.hostel).lean() : null;
+    const hostelProfile = hostel ? await HostelProfile.findOne({ hostelId: hostel._id }).lean() : null;
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-
-        const [blockResponse, roomTypesResponse] = await Promise.all([
-          fetch(`/api/blocks/${params.id}`),
-          fetch(`/api/room-types/${params.id}`)
-        ]);
-
-        if (!blockResponse.ok) {
-          throw new Error('Block not found');
-        }
-
-        const blockData = await blockResponse.json();
-        const roomTypesData = await roomTypesResponse.json();
-
-        setBlockData(blockData);
-        setRoomTypes(roomTypesData.roomTypes || []);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load data');
-      } finally {
-        setLoading(false);
-      }
+    if (!block) {
+      return {
+        title: 'Block Not Found | GetStay',
+        description: 'The accommodation block you are looking for does not exist.',
+      };
     }
 
-    if (params.id) {
-      fetchData();
-    }
-  }, [params.id]);
+    const blockName = block.name || 'Block';
+    const hostelName = hostel?.name || 'Hostel';
+    const city = blockProfile?.basicInfo?.city || hostelProfile?.basicInfo?.city || 'Bhopal';
+    const address = blockProfile?.basicInfo?.address || '';
+    const landmark = blockProfile?.basicInfo?.landmark || hostelProfile?.basicInfo?.landmark || '';
 
-  if (loading) {
-    return (
-      <PageLayout>
-        <div className="flex items-center justify-center h-[60vh]">
-          <LoadingSpinner />
-        </div>
-      </PageLayout>
-    );
+    const amenities = blockProfile?.amenities
+      ?.filter((a: any) => a.available)
+      .map((a: any) => a.name)
+      .join(', ') || '';
+
+    const accommodationType = blockProfile?.propertyDetails?.accommodationType || 'Mixed';
+    const totalRooms = blockProfile?.propertyDetails?.totalRooms || 0;
+
+    const description = `${blockName} at ${hostelName} in ${city}${landmark ? `, near ${landmark}` : ''}. ${accommodationType} accommodation with ${totalRooms} rooms. Features include ${amenities || 'Wi-Fi, security, and modern amenities'}. View rooms and book now.`;
+
+    const keywords = [
+      `${blockName} ${hostelName}`,
+      `${hostelName} ${city}`,
+      `${accommodationType} accommodation ${city}`,
+      `hostel in ${city}`,
+      `PG near ${city}`,
+      ...(landmark ? [`hostel near ${landmark}`, `accommodation near ${landmark}`] : []),
+      ...(amenities ? amenities.split(', ').map((a: string) => `${city} hostel with ${a}`) : []),
+    ].join(', ');
+
+    return {
+      title: `${blockName} - ${hostelName} ${city} | Hostel & PG | GetStay`,
+      description,
+      keywords,
+      openGraph: {
+        type: 'website',
+        locale: 'en_IN',
+        url: `/blocks/${params.id}`,
+        title: `${blockName} - ${hostelName} | GetStay`,
+        description,
+        siteName: 'GetStay',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${blockName} - ${hostelName} | GetStay`,
+        description,
+      },
+      alternates: {
+        canonical: `/blocks/${params.id}`,
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Accommodation Block | GetStay',
+      description: 'View accommodation block details and available rooms.',
+    };
   }
+}
 
-  if (error || !blockData) {
-    return (
-      <PageLayout>
-        <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl font-bold mb-4">Block Not Found</h1>
-          <p className="text-muted-foreground mb-8">{error || 'The requested block could not be found.'}</p>
-          <button
-            onClick={() => router.push('/')}
-            className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:scale-105 active:scale-95 transition-all"
-          >
-            Back to Home
-          </button>
-        </div>
-      </PageLayout>
-    );
-  }
-
-  return (
-    <PageLayout>
-      <button
-        onClick={() => router.push('/')}
-        className="fixed top-20 left-4 z-40 bg-background/80 backdrop-blur-sm p-3 rounded-xl border-2 border-border shadow-lg hover:bg-background transition-all hover:scale-110 active:scale-95"
-        aria-label="Go back"
-      >
-        <ArrowLeft className="w-5 h-5" />
-      </button>
-
-      <BlockHeader
-        block={blockData.block}
-        hostel={blockData.hostel}
-        hostelProfile={blockData.hostelProfile}
-      />
-
-
-      <RoomTypesSection roomTypes={roomTypes} />
-      <BlockDetails block={blockData.block} />
-    </PageLayout>
-  );
+export default function BlockDetailPage({ params }: Props) {
+  return <BlockPageClient params={params} />;
 }
