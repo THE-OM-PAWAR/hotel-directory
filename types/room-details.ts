@@ -8,12 +8,12 @@ export interface RoomDetails {
   hostel: {
     _id: string;
     name: string;
-    profile: any;
+    profile?: any;
   };
   block: {
     _id: string;
     name: string;
-    profile: any;
+    profile?: any;
   };
   [key: string]: any;
 }
