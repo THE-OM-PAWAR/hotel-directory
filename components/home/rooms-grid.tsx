@@ -3,10 +3,10 @@
 import { RoomCard } from '@/components/rooms/room-card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Sparkles } from 'lucide-react';
-import { IRoomWithDetails } from '@/types/room';
+import type { RoomDetails } from '@/types/room-details';
 
 interface RoomsGridProps {
-  rooms: IRoomWithDetails[];
+  rooms: RoomDetails[];
   loading: boolean;
   onLoadMore?: () => void;
   hasMore?: boolean;

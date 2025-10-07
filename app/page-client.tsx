@@ -7,33 +7,42 @@ import { Header } from '@/components/home/header';
 import { BlocksGrid } from '@/components/home/blocks-grid';
 import { RoomsGrid } from '@/components/home/rooms-grid';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { IRoomWithDetails } from '@/types/room';
+import type { RoomDetails } from '@/types/room-details';
 import { Footer } from '@/components/layout/footer';
 
-export function HomePageClient() {
-  const [blocks, setBlocks] = useState<any[]>([]);
-  const [rooms, setRooms] = useState<IRoomWithDetails[]>([]);
-  const [blocksLoading, setBlocksLoading] = useState(true);
-  const [roomsLoading, setRoomsLoading] = useState(true);
+interface HomePageClientProps {
+  initialBlocks: any[];
+  initialRooms: RoomDetails[];
+  initialHasMore: boolean;
+}
+
+export function HomePageClient({ initialBlocks, initialRooms, initialHasMore }: HomePageClientProps) {
+  const [blocks, setBlocks] = useState<any[]>(initialBlocks);
+  const [rooms, setRooms] = useState<RoomDetails[]>(initialRooms);
+  const [blocksLoading, setBlocksLoading] = useState(false);
+  const [roomsLoading, setRoomsLoading] = useState(false);
   const [roomsPage, setRoomsPage] = useState(1);
-  const [hasMoreRooms, setHasMoreRooms] = useState(false);
+  const [hasMoreRooms, setHasMoreRooms] = useState(initialHasMore);
 
   useEffect(() => {
-    async function fetchBlocks() {
-      try {
-        const response = await fetch('/api/blocks-with-hostels');
-        const data = await response.json();
-        setBlocks(data.blocks || []);
-      } catch (error) {
-        console.error('Error fetching blocks:', error);
-        setBlocks([]);
-      } finally {
-        setBlocksLoading(false);
-      }
+    // Only fetch blocks if there are no initial blocks
+    if (initialBlocks.length === 0) {
+      setBlocksLoading(true);
+      const fetchBlocks = async () => {
+        try {
+          const response = await fetch('/api/blocks-with-hostels');
+          const data = await response.json();
+          setBlocks(data.blocks || []);
+        } catch (error) {
+          console.error('Error fetching blocks:', error);
+          setBlocks([]);
+        } finally {
+          setBlocksLoading(false);
+        }
+      };
+      fetchBlocks();
     }
-
-    fetchBlocks();
-  }, []);
+  }, [initialBlocks.length]);
 
   useEffect(() => {
     async function fetchRooms() {

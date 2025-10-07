@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Users, Wifi, Car, Heart } from 'lucide-react';
-import { IRoomWithDetails } from '@/types/room';
+import type { RoomDetails } from '@/types/room-details';
 import { useState, useEffect } from 'react';
 
 interface RoomCardProps {
-  room: IRoomWithDetails;
+  room: RoomDetails;
 }
 
 export function RoomCard({ room }: RoomCardProps) {
@@ -84,13 +84,13 @@ export function RoomCard({ room }: RoomCardProps) {
                 <Users className="h-3 w-3" />
                 <span>Block: {room?.block?.name}</span>
               </div>
-              {blockProfile?.amenities?.some(a => a.name.toLowerCase().includes('wifi') && a.available) && (
+              {blockProfile?.amenities?.some((a: { name: string; available: boolean }) => a.name.toLowerCase().includes('wifi') && a.available) && (
                 <div className="flex items-center space-x-1">
                   <Wifi className="h-3 w-3" />
                   <span>WiFi</span>
                 </div>
               )}
-              {blockProfile?.amenities?.some(a => a.name.toLowerCase().includes('parking') && a.available) && (
+              {blockProfile?.amenities?.some((a: { name: string; available: boolean }) => a.name.toLowerCase().includes('parking') && a.available) && (
                 <div className="flex items-center space-x-1">
                   <Car className="h-3 w-3" />
                   <span>Parking</span>
