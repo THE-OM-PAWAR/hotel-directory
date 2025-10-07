@@ -18,6 +18,24 @@ const spaceMono = Space_Mono({
 
 export const metadata: Metadata = {
   title: 'GetStay - Best Hostels in Bhopal | PG, Rooms & Accommodation',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png' }
+    ],
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/safari-pinned-tab.svg',
+        color: '#5bbad5'
+      }
+    ]
+  },
+  manifest: '/site.webmanifest',
   description: 'Find the best hostels, PG accommodations, and rooms in Bhopal. Browse verified hostels near coaching centers with excellent amenities, Wi-Fi, food, and security. Book affordable student accommodation in Bhopal today.',
   keywords: 'hostels in Bhopal, PG in Bhopal, student accommodation Bhopal, rooms for rent Bhopal, hostel near me Bhopal, affordable hostels Bhopal, boys hostel Bhopal, girls hostel Bhopal, paying guest Bhopal, coaching hostel Bhopal',
   authors: [{ name: 'GetStay' }],

@@ -197,12 +197,13 @@ export function generateOrganizationStructuredData() {
       availableLanguage: ['English', 'Hindi'],
     },
     keywords: [
-      'hostel in Bhopal', 'PG in Bhopal', 'rooms in Bhopal',
+      'hostel in Bhopal', 'Best hostel in Bhopal', 'PG in Bhopal', 'rooms in Bhopal',
       ...bhopalAreas.map(area => [
         `hostel in ${area}`,
         `hostels in ${area}`,
         `Best hostels in ${area}`,
         `PG in ${area}`,
+        `best PG in ${area}`,
         `rooms in ${area}`,
         `student accommodation in ${area}`,
         `working professional accommodation in ${area}`
