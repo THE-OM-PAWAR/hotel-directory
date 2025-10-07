@@ -49,7 +49,7 @@ const faqs = {
       answer: 'Generally, you\'ll need a valid government ID and your booking confirmation. Some hostels may require additional documents.',
     },
   ],
-];
+};
 
 export default function HelpPage() {
   return (

@@ -200,6 +200,8 @@ export function generateOrganizationStructuredData() {
       'hostel in Bhopal', 'PG in Bhopal', 'rooms in Bhopal',
       ...bhopalAreas.map(area => [
         `hostel in ${area}`,
+        `hostels in ${area}`,
+        `Best hostels in ${area}`,
         `PG in ${area}`,
         `rooms in ${area}`,
         `student accommodation in ${area}`,

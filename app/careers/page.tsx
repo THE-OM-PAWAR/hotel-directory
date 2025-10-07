@@ -14,7 +14,7 @@ const jobOpenings = [
     location: 'Remote',
     type: 'Full-time',
     experience: '3-5 years',
-    description: 'We're looking for a Full Stack Developer to help build and maintain our core platform.',
+    description: "We're looking for a Full Stack Developer to help build and maintain our core platform.",
   },
   {
     id: 2,
